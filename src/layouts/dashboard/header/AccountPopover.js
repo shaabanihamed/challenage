@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
 // mocks_
+import { useNavigate } from 'react-router-dom';
 import account from '../../../_mock/account';
+import { userContext } from '../../../userContext/userContext';
 
 // ----------------------------------------------------------------------
 
@@ -26,6 +28,9 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
+  const [, setContext] = useContext(userContext);
+  const isRemember = !!localStorage.getItem('isRemember');
+  const navigate = useNavigate();
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -33,6 +38,18 @@ export default function AccountPopover() {
 
   const handleClose = () => {
     setOpen(null);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+
+    if (!isRemember) {
+      setContext({
+        email: '',
+        password: '',
+      });
+    }
+    navigate('/login', { replace: true });
   };
 
   return (
@@ -97,7 +114,7 @@ export default function AccountPopover() {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <MenuItem onClick={handleClose} sx={{ m: 1 }}>
+        <MenuItem onClick={handleLogout} sx={{ m: 1 }}>
           Logout
         </MenuItem>
       </Popover>
