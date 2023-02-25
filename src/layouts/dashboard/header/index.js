@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Box, Stack, AppBar, Toolbar, IconButton } from '@mui/material';
+import { Box, Stack, AppBar, Toolbar, IconButton, ToggleButton, ToggleButtonGroup } from '@mui/material';
 // utils
 import { bgBlur } from '../../../utils/cssStyles';
 // components
@@ -40,11 +40,21 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 
 Header.propTypes = {
   onOpenNav: PropTypes.func,
+  direction: PropTypes.string,
+  setDirection: PropTypes.func,
 };
 
-export default function Header({ onOpenNav }) {
+export default function Header({ onOpenNav, direction, setDirection }) {
+  const handleDirection = (event, newAlignment) => {
+    setDirection(newAlignment);
+  };
+
   return (
-    <StyledRoot>
+    <StyledRoot
+      sx={{
+        left: direction === 'rtl' ? 0 : 'auto',
+      }}
+    >
       <StyledToolbar>
         <IconButton
           onClick={onOpenNav}
@@ -59,6 +69,21 @@ export default function Header({ onOpenNav }) {
 
         <Searchbar />
         <Box sx={{ flexGrow: 1 }} />
+
+        <ToggleButtonGroup
+          sx={{ mr: 2, direction: direction === 'rtl' && 'ltr' }}
+          value={direction}
+          exclusive
+          onChange={handleDirection}
+          aria-label="text alignment"
+        >
+          <ToggleButton size="small" value="ltr" aria-label="ltr">
+            LTR
+          </ToggleButton>
+          <ToggleButton size="small" value="rtl" aria-label="rtl">
+            RTL
+          </ToggleButton>
+        </ToggleButtonGroup>
 
         <Stack
           direction="row"

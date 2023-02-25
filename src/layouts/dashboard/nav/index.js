@@ -32,9 +32,10 @@ const StyledAccount = styled('div')(({ theme }) => ({
 Nav.propTypes = {
   openNav: PropTypes.bool,
   onCloseNav: PropTypes.func,
+  direction: PropTypes.string,
 };
 
-export default function Nav({ openNav, onCloseNav }) {
+export default function Nav({ openNav, onCloseNav, direction }) {
   const { pathname } = useLocation();
 
   const isDesktop = useResponsive('up', 'lg');
@@ -121,7 +122,11 @@ export default function Nav({ openNav, onCloseNav }) {
             sx: {
               width: NAV_WIDTH,
               bgcolor: 'background.default',
-              borderRightStyle: 'dashed',
+              borderColor: 'rgba(145, 158, 171, 0.24)',
+              borderRightStyle: direction === 'rtl' ? 'none' : 'dashed',
+              borderLeftStyle: direction === 'ltr' ? 'none' : 'dashed',
+              right: direction === 'rtl' ? 0 : 'auto',
+              left: direction === 'rtl' ? 'auto' : 0,
             },
           }}
         >

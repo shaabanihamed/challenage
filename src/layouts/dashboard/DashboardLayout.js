@@ -34,12 +34,12 @@ const Main = styled('div')(({ theme }) => ({
 
 export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
-
+  const [direction, setDirection] = useState('ltr');
   return (
-    <StyledRoot>
-      <Header onOpenNav={() => setOpen(true)} />
+    <StyledRoot dir={direction}>
+      <Header onOpenNav={() => setOpen(true)} direction={direction} setDirection={setDirection} />
 
-      <Nav openNav={open} onCloseNav={() => setOpen(false)} />
+      <Nav openNav={open} onCloseNav={() => setOpen(false)} direction={direction} />
 
       <Main>
         <Outlet />
